@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherapp/blocs/theme.bloc.dart';
 import 'package:weatherapp/blocs/weather.bloc.dart';
+import 'package:weatherapp/blocs/weather_cubit.dart';
 import 'package:weatherapp/events/theme.event.dart';
 import 'package:weatherapp/events/weather.event.dart';
 import 'package:weatherapp/screens/city.search.screen.dart';
@@ -47,14 +48,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     MaterialPageRoute(
                         builder: (context) => CitySearchScreen()));
                 if (typedCity != null) {
-                  BlocProvider.of<WeatherBloc>(context)
-                      .add(WeatherEventRequested(city: typedCity));
+                  BlocProvider.of<WeatherCubit>(context).getWeather(typedCity);
                 }
               })
         ],
       ),
       body: Center(
-        child: BlocConsumer<WeatherBloc, WeatherState>(
+        child: BlocConsumer<WeatherCubit, WeatherState>(
           listener: (context, weatherState) {
             if (weatherState is WeatherStateSuccess) {
               BlocProvider.of<ThemeBloc>(context).add(ThemeEventWeatherChanged(
@@ -105,8 +105,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ),
                     ),
                     onRefresh: () {
-                      BlocProvider.of<WeatherBloc>(context)
-                          .add(WeatherEventRefresh(city: weather.location));
+                      BlocProvider.of<WeatherCubit>(context)
+                          .refreshWeather(weather.location);
                       return _completer.future;
                     });
               });

@@ -5,6 +5,7 @@ import 'package:weatherapp/blocs/setting.bloc.dart';
 import 'package:weatherapp/blocs/theme.bloc.dart';
 import 'package:weatherapp/blocs/weather.bloc.dart';
 import 'package:weatherapp/blocs/weather.bloc.observer.dart';
+import 'package:weatherapp/blocs/weather_cubit.dart';
 import 'package:weatherapp/screens/weather.screen.dart';
 import 'package:weatherapp/states/theme.state.dart';
 import 'package:weatherapp/weather.repository.dart';
@@ -36,8 +37,7 @@ class MyApp extends StatelessWidget {
     return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, themeState) {
       return MaterialApp(
         home: BlocProvider(
-          create: (context) =>
-              WeatherBloc(weatherRepository: weatherRepository),
+          create: (context) => WeatherCubit(weatherRepository),
           child: WeatherScreen(),
         ),
       );
