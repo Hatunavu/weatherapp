@@ -8,9 +8,14 @@ const baseUrl = 'https://www.metaweather.com';
 final locationUrl = (city) => '${baseUrl}/api/location/search/?query=${city}';
 final weatherUrl = (locationId) => '${baseUrl}/api/location/${locationId}';
 
-class WeatherRepository {
+abstract class WeatherRepository {
+  Future<Weather> getWeatherFromCity(String city);
+}
+
+class FakeWeatherRepository implements WeatherRepository {
   final http.Client httpClient;
-  WeatherRepository({@required this.httpClient}) : assert(httpClient != null);
+  FakeWeatherRepository({@required this.httpClient})
+      : assert(httpClient != null);
   Future<int> getLocationIdFromCity(String city) async {
     final response = await this.httpClient.get(Uri.parse(locationUrl(city)));
     if (response.statusCode == 200) {

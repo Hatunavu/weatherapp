@@ -13,8 +13,8 @@ import 'package:http/http.dart' as http;
 
 void main() {
   Bloc.observer = WeatherBlocObserver();
-  final WeatherRepository weatherRepository =
-      WeatherRepository(httpClient: http.Client());
+  final FakeWeatherRepository weatherRepository =
+      FakeWeatherRepository(httpClient: http.Client());
 
   runApp(MultiBlocProvider(
     providers: [
@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
     return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, themeState) {
       return MaterialApp(
         home: BlocProvider(
-          create: (context) => WeatherCubit(weatherRepository),
+          create: (context) =>
+              WeatherCubit(FakeWeatherRepository(httpClient: http.Client())),
           child: WeatherScreen(),
         ),
       );
